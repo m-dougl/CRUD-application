@@ -5,7 +5,6 @@ from datetime import datetime
 
 
 def main():
-    st.set_page_config(page_title="Foods Delivery", layout="wide")
     st.title("Foods Delivery")
     CRUD().create()
 
@@ -56,23 +55,46 @@ def main():
             )
 
         send_button = st.form_submit_button(label="Send")
-        if send_button:
-            request = RequestModel(
-                first_name,
-                last_name,
-                address,
-                date,
-                burguer_choice,
-                burguer_quantity,
-                soup_choice,
-                soup_quantity,
+
+    if send_button and all([first_name, last_name, address]):
+        request = RequestModel(
+            first_name.capitalize(),
+            last_name.capitalize(),
+            address,
+            date,
+            burguer_choice,
+            burguer_quantity,
+            soup_choice,
+            soup_quantity,
+        )
+
+        if CRUD().check_existence(
+            first_name=request.first_name, last_name=request.last_name
+        ):
+            alert_expander = st.expander(label="🚨 Attention!", expanded=True)
+            alert_expander.write(
+                "Looks like you already have an order in progress. Would you like to add the new orders to your existing list?"
             )
-            if all([first_name, last_name, address]):
-                CRUD().insert(request)
+            yes_btn = alert_expander.button(label="Yes")
+            no_btn = alert_expander.button(label="No")
+
+            if yes_btn:
+                CRUD().update(
+                    new_values=request.requests,
+                    first_name=request.first_name,
+                    last_name=request.last_name,
+                )
                 st.success("🤝 Your order has been received! Thank you for your preference ")
-            else:
-                st.error("⚠️ Please fill in all the required fields")
+            elif no_btn:
+                CRUD().insert(request)
+                st.success("🤝 Your order has been received! Thank you for your preference ")    
+        else:
+            CRUD().insert(request)
+            st.success("🤝 Your order has been received! Thank you for your preference ")        
+    else:
+        st.error("⚠️ Please fill in all the required fields")
 
 
 if __name__ == "__main__":
+    st.set_page_config(page_title="Foods Delivery", layout="wide")
     main()
