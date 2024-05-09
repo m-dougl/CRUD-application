@@ -77,3 +77,18 @@ class CRUD:
             password=os.getenv("DB_PASSWORD"),
         ) as connection:
             pass
+    
+    def delete(self, first_name, last_name):
+        with psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+        ) as connection:
+            cursor = connection.cursor()
+            query = """
+                    DELETE FROM foodsrequests
+                    WHERE first_name=%s AND last_name=%s
+            """
+            cursor.execute(query, (first_name, last_name))
