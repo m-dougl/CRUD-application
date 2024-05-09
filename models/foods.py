@@ -19,7 +19,5 @@ class RequestModel:
         self.burguer_quantity = burguer_quantity
         self.soup_choice = soup_choice if soup_choice != 0 else None
         self.soup_quantity = soup_quantity
-        self.requests = f"""
-            {self.burguer_quantity} x {self.burguer_choice}
-            {self.soup_choice} x {self.soup_choice}
-        """
+        self.requests = f"""{self.burguer_quantity} x {self.burguer_choice}
+                            {self.soup_quantity} x {self.soup_choice}"""
