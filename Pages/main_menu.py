@@ -69,8 +69,9 @@ def main():
             )
             if all([first_name, last_name, address]):
                 CRUD().insert(request)
+                st.success("🤝 Your order has been received! Thank you for your preference ")
             else:
-                st.error("Please fill in all the required fields")
+                st.error("⚠️ Please fill in all the required fields")
 
 
 if __name__ == "__main__":
