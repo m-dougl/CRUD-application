@@ -68,7 +68,7 @@ class CRUD:
             table = pd.read_sql_query(query, connection)
             return table
 
-    def update(self):
+    def update(self, new_values, first_name, last_name):
         with psycopg2.connect(
             host=os.getenv("DB_HOST"),
             port=os.getenv("DB_PORT"),
@@ -76,8 +76,14 @@ class CRUD:
             user=os.getenv("DB_USER"),
             password=os.getenv("DB_PASSWORD"),
         ) as connection:
-            pass
-    
+            cursor = connection.cursor()
+            query = """
+                    UPDATE foodsrequests
+                    SET requests = %s
+                    WHERE first_name = %s AND last_name = %s
+                """
+            cursor.execute(query, (new_values, first_name, last_name))
+
     def delete(self, first_name, last_name):
         with psycopg2.connect(
             host=os.getenv("DB_HOST"),
@@ -92,3 +98,26 @@ class CRUD:
                     WHERE first_name=%s AND last_name=%s
             """
             cursor.execute(query, (first_name, last_name))
+
+    def check_existence(self, first_name, last_name):
+        with psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+        ) as connection:
+            cursor = connection.cursor()
+            query = """
+                    SELECT first_name, last_name FROM foodsrequests
+                    WHERE first_name=%s AND last_name=%s
+            """
+            cursor.execute(query, (first_name, last_name))
+            if cursor.fetchone():
+                return True
+            else:
+                return False
+
+
+if __name__ == "__main__":
+    print(CRUD().check_existence("douglas", "maia"))
