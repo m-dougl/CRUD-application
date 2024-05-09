@@ -12,6 +12,7 @@ black = "^24.4.2"
 pyodbc = "^5.1.0"
 python-dotenv = "^1.0.1"
 psycopg2-binary = "^2.9.9"
+pandas = "^2.2.2"
 
 
 [build-system]
