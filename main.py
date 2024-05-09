@@ -1,12 +1,14 @@
 import streamlit as st
 from models.foods import RequestModel
+from services.crud import CRUD
 from datetime import datetime
 
 
 def main():
     st.set_page_config(page_title="Foods Delivery")
     st.title("Foods Delivery")
-
+    CRUD().create()
+    
     # Input data forms
     with st.form("request_forms"):
         st.write("Inform your request")
@@ -63,9 +65,12 @@ def main():
                 burguer_choice,
                 burguer_quantity,
                 soup_choice,
-                soup_quantity
+                soup_quantity,
             )
-            st.write(request)
+            if all([first_name, last_name, address]):
+                CRUD().add(request)
+            else:
+                st.error("Please fill in all the required fields")
 
 if __name__ == "__main__":
     main()
