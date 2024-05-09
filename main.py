@@ -1,4 +1,6 @@
 import streamlit as st
+from models.foods import RequestModel
+from datetime import datetime
 
 
 def main():
@@ -12,9 +14,9 @@ def main():
         first_name = st.text_input(label="First name")
         last_name = st.text_input(label="Last name")
         address = st.text_input(label="Address")
+        date = datetime.now()
 
         # Foods acquisition
-        foods_list = list()
         foods_area = st.expander(label="Foods List", expanded=True)
 
         cols = foods_area.columns((7.5, 2))
@@ -44,11 +46,26 @@ def main():
             )
 
         with cols[1]:
-            burguer_quantity = st.number_input(label="Quantity of Burguer", min_value=0, step=1)
-            soup_quantity = st.number_input(label="Quantity of Soup", min_value=0, step=1)
-            
-        send_button = st.form_submit_button(label="Send")
+            burguer_quantity = st.number_input(
+                label="Quantity of Burguer", min_value=0, step=1
+            )
+            soup_quantity = st.number_input(
+                label="Quantity of Soup", min_value=0, step=1
+            )
 
+        send_button = st.form_submit_button(label="Send")
+        if send_button:
+            request = RequestModel(
+                first_name,
+                last_name,
+                address,
+                date,
+                burguer_choice,
+                burguer_quantity,
+                soup_choice,
+                soup_quantity
+            )
+            st.write(request)
 
 if __name__ == "__main__":
     main()
