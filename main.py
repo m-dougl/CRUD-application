@@ -11,7 +11,7 @@ def main():
         # User data
         first_name = st.text_input(label="First name")
         last_name = st.text_input(label="Last name")
-        location = st.text_input(label="Location")
+        address = st.text_input(label="Address")
 
         # Foods acquisition
         foods_list = list()
