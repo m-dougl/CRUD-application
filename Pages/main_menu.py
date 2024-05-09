@@ -5,7 +5,7 @@ from datetime import datetime
 
 
 def main():
-    st.set_page_config(page_title="Foods Delivery")
+    st.set_page_config(page_title="Foods Delivery", layout="wide")
     st.title("Foods Delivery")
     CRUD().create()
 
