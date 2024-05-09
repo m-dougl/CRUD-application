@@ -1,6 +1,7 @@
 import psycopg2
-from dotenv import load_dotenv
 import os
+import pandas as pd
+from dotenv import load_dotenv
 
 
 class CRUD:
@@ -28,7 +29,7 @@ class CRUD:
             """
             cursor.execute(query)
 
-    def add(self, request):
+    def insert(self, request):
         with psycopg2.connect(
             host=os.getenv("DB_HOST"),
             port=os.getenv("DB_PORT"),
@@ -50,5 +51,29 @@ class CRUD:
                     request.address,
                     request.date,
                     request.requests,
-                )
+                ),
             )
+
+    def read(self):
+        with psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+        ) as connection:
+            query = """
+                    SELECT * FROM foodsrequests
+            """
+            table = pd.read_sql_query(query, connection)
+            return table
+
+    def update(self):
+        with psycopg2.connect(
+            host=os.getenv("DB_HOST"),
+            port=os.getenv("DB_PORT"),
+            dbname=os.getenv("DB_NAME"),
+            user=os.getenv("DB_USER"),
+            password=os.getenv("DB_PASSWORD"),
+        ) as connection:
+            pass
